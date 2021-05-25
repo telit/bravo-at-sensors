@@ -102,11 +102,11 @@ INT32 demoTaskCb(INT32 type, INT32 param1, INT32 param2)
     return -1;
   }
 
+  my_cmds_at_init();
 
   AZX_LOG_DEBUG("init sensors...\r\n");
   init_sensors();
 
-  my_cmds_at_init();
 
   return 0;
 }

@@ -78,8 +78,17 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
         break;
       }
 
+      if(sens_id < BSENS_SENSOR_ENVIRONM_ID || sens_id >= BSENS_MAX_ID)
+      {
+        AZX_LOG_ERROR("Parameter out of range!\r\n" );
+        /*Release AT instance with failure*/
+        AZX_EASY_AT_RELEASE_WITH_CMEE( &hdls, M2MB_ATP_CME_OPERATION_NOT_ALLOWED, NULL );
+        break;
+      }
+
+
       AZX_LOG_DEBUG("reading id %u...\r\n", sens_id);
-//TODO check range
+
       read_sensor((BSENS_SENSOR_ID_E)sens_id, (void**) &pdata);
 
       switch(sens_id)
