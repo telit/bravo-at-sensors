@@ -39,7 +39,7 @@
 void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
 {
   M2MB_ATP_PARAM_T *atpParam;
-  char rsp_buf[128];
+  char rsp_buf[256];
   char *p_param = NULL;
   AZX_EASY_AT_HANDLES_T hdls;
   m2mb_atp_get_input_data( atpHandle, atpI, &atpParam );
@@ -96,7 +96,8 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
       case BSENS_SENSOR_ENVIRONM_ID:
       {
         BSENS_ENV_T  *pENVIRON_data = (BSENS_ENV_T *) pdata;
-        sprintf( rsp_buf, "%s: %d,%.02f,%.02f,%.02f,%d",
+        memset(rsp_buf, 0, sizeof(rsp_buf));
+        snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d,%.02f,%.02f,%.02f,%d",
                                atpParam->atpCmdString,
                                sens_id,
                                pENVIRON_data->temperature,
@@ -110,7 +111,8 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
       case BSENS_SENSOR_3D_VECT_ID:
       {
         BSENS_3DVECT_T *p3DVECT_data = (BSENS_3DVECT_T *) pdata;
-        sprintf( rsp_buf, "%s: %d,%.04f,%.04f,%.04f,%.04f,%d",
+        memset(rsp_buf, 0, sizeof(rsp_buf));
+        snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d,%.04f,%.04f,%.04f,%.04f,%d",
                        atpParam->atpCmdString,
                        sens_id,
                        p3DVECT_data->w,
@@ -127,7 +129,8 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
       {
         BSENS_TAMPER_T *pTAMPER_data = (BSENS_TAMPER_T *) pdata;
         read_sensor((BSENS_SENSOR_ID_E)sens_id, (void**) &pTAMPER_data);
-        sprintf( rsp_buf, "%s: %d,%d",
+        memset(rsp_buf, 0, sizeof(rsp_buf));
+        snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d,%d",
                                atpParam->atpCmdString,
                                sens_id,
                                pTAMPER_data->status
@@ -153,7 +156,8 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
 
     /*AT#MYCMD=?<CR>*/
     case M2MB_ATP_CMDTYP_TEST:
-      sprintf( rsp_buf, "%s: %d-%d",
+      memset(rsp_buf, 0, sizeof(rsp_buf));
+      snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d-%d",
                atpParam->atpCmdString,
                BSENS_SENSOR_ENVIRONM_ID,
                BSENS_SENSOR_TAMPER_ID

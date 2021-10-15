@@ -10,19 +10,18 @@
   @details
 
   @description
-    Tampering Demo application. Debug prints on MAIN UART
+    MultiSensors Demo application. Debug prints on MAIN UART
   @version
-    1.0.0
+    1.0.2
   @note
     Start of Appzone: Entry point
     User code entry is in function M2MB_main()
 
-  @author WhiteBeard
   @author FabioPi
 
   @date
     2020-02-26
- */
+*/
 
 /* Include files ================================================================================*/
 #include <stdint.h>
@@ -77,7 +76,7 @@ INT32 demoTaskCb(INT32 type, INT32 param1, INT32 param2)
   (void) param2;
 
   /* Open GPIO */
-  if( open_LED( LED_PIN_NUM ) != 0 )
+  if( open_LED( LED_INDEX_NUM ) != 0 )
   {
     AZX_LOG_ERROR( "Cannot open gpio channel.\r\n" );
     return -1;

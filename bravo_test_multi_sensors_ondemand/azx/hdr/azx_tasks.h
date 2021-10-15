@@ -5,8 +5,8 @@
 #define HDR_AZX_TASKS_H_
 /**
  * @file azx_tasks.h
- * @version 1.0.2
- * @dependencies azx_log azx_utils
+ * @version 1.0.4
+ * @dependencies core/azx_log core/azx_utils
  * @author Alessio Quieti
  * @date 07/04/2018
  *
@@ -279,5 +279,14 @@ INT32 azx_tasks_getCurrentTaskId( void );
  * @ingroup taskUsage
 */
 CHAR* azx_tasks_getCurrentTaskName( CHAR *name );
+
+/**
+ * Returns the number of messages in the queue of a task.
+ *
+ * @param[in] The ID of the task whose queue should be checked.
+ *
+ * @return The number of messages that are queued. In case of error, -1 is returned.
+ */
+INT32 azx_tasks_getEnqueuedCount( INT8 task_id );
 
 #endif /* HDR_AZX_TASKS_H_ */
