@@ -424,3 +424,18 @@ INT32 azx_tasks_destroyTask(INT8 TaskProcID)
 
   return 0;
 }
+
+INT32 azx_tasks_getEnqueuedCount( INT8 task_id )
+{
+  INT8 slot = task_id - 1;
+  MEM_W  out = 0;
+  M2MB_OS_Q_HANDLE queueHandle = m2mb_tasks.task_slots[slot].Task_Queue_H;
+  M2MB_OS_RESULT_E result = m2mb_os_q_getItem( queueHandle, M2MB_OS_Q_SEL_CMD_ENQUEUED, &out, NULL );
+  if(result != M2MB_OS_SUCCESS)
+  {
+    AZX_LOG_ERROR("Cannot read enqueued message count: %d\r\n", result);
+    return -1;
+  }
+
+  return (INT32)out;
+}

@@ -1,57 +1,10 @@
-# bravo-at-sensors
-
 Telit IoT AppZone Bravo Board Sensors App - leverage onboard sensors
 
 ## Abstract
 
 This repository contains Telit IoT AppZone C sample app exposing Bravo Board sensors, allowing to access data from them through a dedicated custom AT command
 
-**The minimum firmware version to build the samples is 30.00.xx8**.
-
-
-## Usage
-
-The master branch will always contain the latest app version. Older ones will be available through tags.
-
-
-To use the application it, from the AppZone IDE create a new Telit Project
-
-![](./pics/new_project.png)
-
-Select the ME910C1 products family, the ToolChain (for example, GCC) and the required firmware version, then press **Next >**.
-
-![](./pics/project_conf.png)
-
-In the next window, leave "Empty Project" as project type, then press **Finish** button.
-
-![](./pics/empty_project.png)
-
-
-In the IDE Project Explorer, the newly created project will be available:
-
-![](./pics/project_ide.png)
-
-As last step, go into the repository local copy (either cloned via git or downloaded as a zip file), and enter `bravo_test_multi_sensors_ondemand/` folder. Select all files and folders inside
-
-![](./pics/project_files.png)
-
-then copy and paste them in the project from the IDE:
-
-![](./pics/paste_files.png)
-
-The IDE will ask the permission to overwrite existing files, press **"Yes to All"**.
-
-Done! The project is now updated with the latest sample app source code available, and is ready to be built.
-
-![](./pics/project_complete.png)
-
-
-** External Libraries **
-
-To build the application it is required to put `libalgobsec.ar` file into the project's BOSCH/BSEC folder. The library can be retrieved at the link
-https://www.bosch-sensortec.com/software-tools/software/bsec/ . Download BSEC 1.4.7.4 version archive, then extract the library `libalgobsec.a` from the ZIP file and rename as `libalgobsec.ar`. It can be found in the directory
-/BSEC_1.4.7.4_Generic_Release/algo/normal_version/bin/gcc/Cortex_A7/
-
+**The minimum firmware version to build the samples is 30.00.xx8, but it is suggested to use the latest 30.01.xx0**.
 
 ---
 
@@ -61,7 +14,7 @@ This command allows to read one of the sensors values on the bravo board
 
 
 
-   <img src="./pics/set.png" height="16">  **AT\#BSENS=&lt;sensorId&gt;**
+   <img src="../../pics/set.png" height="16">  **AT\#BSENS=&lt;sensorId&gt;**
 
 Set command allows read the provided sensor data.
 
@@ -141,7 +94,7 @@ For example:
 
 **\#BSENS: 3,0**
   ---------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
-   <img src="./pics/query.png" height="16"> **AT\#BSENS=?**
+   <img src="../../pics/query.png" height="16"> **AT\#BSENS=?**
 
 Test command reports the available range of values for parameter &lt;sensorId&gt; in the format:
 
@@ -150,12 +103,16 @@ Test command reports the available range of values for parameter &lt;sensorId&gt
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+**External Libraries**
+
+To build the application it is required to put `libalgobsec.ar` file into the project's BOSCH/BSEC folder. The library can be retrieved at the link
+https://www.bosch-sensortec.com/software-tools/software/bsec/ . Download the BSEC 1.4.8.0 v3 version archive, then extract the library `libalgobsec.a` from the ZIP file and rename as `libalgobsec.ar`. It can be found in the archive directory
+*BSEC_1.4.8.0_Generic_Release_updated_v3/algo/normal_version/bin/gcc/Cortex_A7/without_FPIC*
 
 
-For further info, please go on Telit's cellular modules product webpage https://www.telit.com/m2m-iot-products/cellular-modules/standard-industrial-grade/
+Please note: all the apps using BSEC library configure the device with the **18v3s_4d** option. If a different version of the library is in use, please replace the BOSCH/BME680/bsec_serialized_configurations_iaq.c file in the project with the one inside `BSEC_x.x.x.x_Generic_Release/config/generic_18v_3s_4d/`
 
-And Bravo Board webpage
-https://www.telit.com/developer-zone/telit-bravo-evaluation-kit/
 
-AppZone development resources are available at the link https://www.telit.com/developer-zone/iot-app-zone/iot-app-zone-developer-resources/
+---
+
 

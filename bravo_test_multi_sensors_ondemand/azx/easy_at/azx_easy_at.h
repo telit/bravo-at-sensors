@@ -16,7 +16,7 @@
       m2mb_types.h
       m2mb_atp.h
 
-  @version 1.0.0
+  @version 1.0.1
   @dependencies azx_log azx_utils
 
   @author
@@ -209,7 +209,8 @@ typedef HANDLE AZX_EASY_AT_TASK_HANDLE;   /**<ATP task Handle*/
 #define AZX_EASY_AT_TRACE_ERROR(a,...)    AZX_LOG_ERROR( a, ##__VA_ARGS__)
 #define AZX_EASY_AT_TRACE_WARNING(a,...)  AZX_LOG_WARN( a, ##__VA_ARGS__)
 #define AZX_EASY_AT_TRACE_INFO(a,...)     AZX_LOG_INFO( a, ##__VA_ARGS__)
-#define AZX_EASY_AT_TRACE_DEBUG(a,...)    // AZX_LOG_DEBUG( a, ##__VA_ARGS__)
+#define AZX_EASY_AT_TRACE_DEBUG(a,...)    AZX_LOG_DEBUG( a, ##__VA_ARGS__)
+#define AZX_EASY_AT_TRACE_DETAIL(a,...)   AZX_LOG_TRACE( a, ##__VA_ARGS__)
 
 
 
@@ -217,7 +218,7 @@ typedef HANDLE AZX_EASY_AT_TASK_HANDLE;   /**<ATP task Handle*/
   {\
     M2MB_RESULT_E _r = result;\
     if(_r == M2MB_RESULT_SUCCESS)\
-      AZX_EASY_AT_TRACE_DEBUG("Command Registered!\r\n");\
+      AZX_EASY_AT_TRACE_DETAIL("Command Registered!\r\n");\
     else {\
       AZX_EASY_AT_TRACE_ERROR("Cannot register! error: %d\r\n", result);\
       return _r;\

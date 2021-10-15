@@ -49,7 +49,9 @@
   #define ULONG_LONG_MAX ULLONG_MAX
 #endif
 
-
+#ifndef ULONG_LONG_MAX
+  #define ULONG_LONG_MAX ULLONG_MAX
+#endif
 
 /* Local typedefs ===============================================================================*/
 
@@ -518,9 +520,9 @@ static M2MB_RESULT_E _azx_easy_at_task_init( AZX_EASY_AT_MODULE_T *module,
   static UINT8 QueueArea[100 * 4 * 4];
   UINT16 prio;
   UINT32 stack;
-  AZX_EASY_AT_TRACE_DEBUG( "ATPTASK : _azx_easy_at_task_init %d\r\n", msgSize );
+  AZX_EASY_AT_TRACE_DETAIL( "ATPTASK : _azx_easy_at_task_init %d\r\n", msgSize );
   msgSize = ( msgSize / 4 );
-  AZX_EASY_AT_TRACE_DEBUG( "msgSize %d\r\n", msgSize );
+  AZX_EASY_AT_TRACE_DETAIL( "msgSize %d\r\n", msgSize );
   osRes = m2mb_os_q_setAttrItem( &qAttrHandle, 1, M2MB_OS_Q_SEL_CMD_CREATE_ATTR,  NULL );
 
   if( osRes != M2MB_OS_SUCCESS )
@@ -562,7 +564,7 @@ static M2MB_RESULT_E _azx_easy_at_task_init( AZX_EASY_AT_MODULE_T *module,
     return M2MB_RESULT_FAIL;
   }
 
-  AZX_EASY_AT_TRACE_DEBUG( "ATPTASK : Thread creation\r\n" );
+  AZX_EASY_AT_TRACE_DETAIL( "ATPTASK : Thread creation\r\n" );
 
   if( priority == 0 )
   {
@@ -794,7 +796,7 @@ AZX_EASY_AT_MODULE_T *azx_easy_at_init( CHAR *module_name,  AZX_EASY_AT_ATCOMMAN
   }
 
   strncpy( module->module_name, module_name, sizeof( module->module_name ) );
-  AZX_EASY_AT_TRACE_INFO( "azx_easy_at_init start\r\n" );
+  AZX_EASY_AT_TRACE_DETAIL( "azx_easy_at_init start\r\n" );
   retVal = m2mb_atp_init( &atpHandle, ( m2mb_atp_ind_callback )NULL, NULL );
 
   if( retVal != M2MB_RESULT_SUCCESS )
@@ -812,14 +814,14 @@ AZX_EASY_AT_MODULE_T *azx_easy_at_init( CHAR *module_name,  AZX_EASY_AT_ATCOMMAN
     }
     else
     {
-      AZX_EASY_AT_TRACE_INFO( "m2mb_atp_init succeeded\r\n" );
+      AZX_EASY_AT_TRACE_DEBUG( "m2mb_atp_init succeeded\r\n" );
     }
 
   retVal = _azx_easy_at_task_init( module, &appAtptaskHandle, 0, 0 );
 
   if( retVal == M2MB_RESULT_SUCCESS )
   {
-    AZX_EASY_AT_TRACE_INFO( "_azx_easy_at_task_init succeeded\r\n" );
+    AZX_EASY_AT_TRACE_DETAIL( "_azx_easy_at_task_init succeeded\r\n" );
   }
   else
   {
@@ -951,7 +953,7 @@ INT32 azx_easy_at_strToL( CHAR *str, INT32 *output )
     return -1;
   }
 
-  if( endptr == ( CHAR * ) str )
+  if( ( *endptr != '\0') || (  endptr == ( CHAR * ) str ))
   {
     /*no digits found*/
     return -2;
@@ -1010,7 +1012,7 @@ INT32 azx_easy_at_strToUL( CHAR *str, UINT32 *output )
     return -1;
   }
 
-  if( endptr == ( CHAR * ) str )
+  if( ( *endptr != '\0') || (  endptr == ( CHAR * ) str ))
   {
     /*no digits found*/
     return -2;
@@ -1069,7 +1071,7 @@ INT32 azx_easy_at_strToULL( CHAR *str, UINT64 *output )
     return -1;
   }
 
-  if( endptr == ( CHAR * ) str )
+  if( ( *endptr != '\0') || ( endptr == ( CHAR * ) str ))
   {
     /*no digits found*/
     return -2;
@@ -1127,7 +1129,7 @@ INT32 azx_easy_at_strToULHex( CHAR *str, UINT32 *output )
     return -1;
   }
 
-  if( endptr == ( CHAR * ) str )
+  if( ( *endptr != '\0') || (  endptr == ( CHAR * ) str ))
   {
     /*no digits found*/
     return -2;
@@ -1180,19 +1182,19 @@ INT8 azx_easy_at_strToUS( CHAR *str, UINT8 *output )
 
   tmp = strtoul( str, &endptr, 10 );
 
-  if( ( errno == ERANGE && ( tmp == ULONG_MAX ) ) || ( errno != 0 && tmp == 0 ) )
+  if( ( tmp >= UCHAR_MAX ) || ( errno != 0 && tmp == 0 ) )
   {
     /*Out of range parameter*/
     return -1;
   }
 
-  if( endptr == ( CHAR * ) str )
+  if( ( *endptr != '\0') || (  endptr == ( CHAR * ) str ))
   {
     /*no digits found*/
     return -2;
   }
 
-  *output = tmp;
+  *output = (UINT8) tmp;
   return 0;
 }
 
