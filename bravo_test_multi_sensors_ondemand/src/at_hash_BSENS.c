@@ -85,8 +85,25 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
         AZX_EASY_AT_RELEASE_WITH_CMEE( &hdls, M2MB_ATP_CME_OPERATION_NOT_ALLOWED, NULL );
         break;
       }
+      if(sens_id == BSENS_SENSOR_LINEAR_ACC_ID)
+      {
+        if( atpParam->itemNum >= 2 )
+        {
+          UINT32 gravity_threshold;
+           p_param = atpParam->item[1];
+          if (0 !=azx_easy_at_strToUL(p_param, &gravity_threshold))
+          {
+            AZX_LOG_ERROR("Cannot parse parameter not allowed!\r\n" );
+            /*Release AT instance with failure*/
+            AZX_EASY_AT_RELEASE_WITH_CMEE( &hdls, M2MB_ATP_CME_OPERATION_NOT_ALLOWED, NULL );
+            break;
+          }
+          set_accel_threshold(gravity_threshold);
 
-
+          AZX_EASY_AT_RELEASE_WITH_SUCCESS( &hdls );
+          break;
+        }
+      }
       AZX_LOG_DEBUG("reading id %u...\r\n", sens_id);
 
       read_sensor((BSENS_SENSOR_ID_E)sens_id, (void**) &pdata);
@@ -139,6 +156,31 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
       }
         break;
 
+      case BSENS_SENSOR_LINEAR_ACC_ID:
+      {
+        BSENS_LINEAR_ACC_T *pLinearAcc_data = (BSENS_LINEAR_ACC_T *) pdata;
+        UINT32 th = get_accel_threshold();
+        memset(rsp_buf, 0, sizeof(rsp_buf));
+        if(th > 0)
+        {
+          snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d,%u,%.04f,%.04f,%.04f,%u",
+                         atpParam->atpCmdString,
+                         sens_id,
+                         th,
+                         pLinearAcc_data->x,
+                         pLinearAcc_data->y,
+                         pLinearAcc_data->z,
+                         pLinearAcc_data->events_counter
+          );
+        }
+        else
+        {
+          snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d,%u",
+                         atpParam->atpCmdString,
+                         sens_id,
+                         th);
+        }
+      }
       default:
         break;
       }
@@ -160,7 +202,7 @@ void BSENS_AT_Callback( M2MB_ATP_HANDLE atpHandle, UINT16 atpI )
       snprintf( rsp_buf, sizeof(rsp_buf) -1, "%s: %d-%d",
                atpParam->atpCmdString,
                BSENS_SENSOR_ENVIRONM_ID,
-               BSENS_SENSOR_TAMPER_ID
+               BSENS_MAX_ID - 1
                );
       m2mb_atp_msgout( atpHandle, atpI, rsp_buf );
       AZX_EASY_AT_RELEASE_WITH_SUCCESS( &hdls );

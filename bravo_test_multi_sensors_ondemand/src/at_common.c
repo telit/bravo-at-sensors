@@ -36,8 +36,7 @@
 #include "at_common.h"
 
 #include "at_hash_BSENS.h"
-
-
+#include "at_hash_BSENSDEBUG.h"
 
 
 static AZX_EASY_AT_MODULE_T *g_at_module = NULL;
@@ -62,7 +61,8 @@ INT32 my_cmds_at_init( void )
   AZX_EASY_AT_MODULE_T *module;
   AZX_EASY_AT_ATCOMMAND_T my_commands_List[] =
   {
-    { "#BSENS",   M2MB_ATP_NORML | M2MB_ATP_NOPIN | M2MB_ATP_NOSIM, BSENS_AT_Callback, NULL, 0}
+    { "#BSENS",   M2MB_ATP_NORML | M2MB_ATP_NOPIN | M2MB_ATP_NOSIM, BSENS_AT_Callback, NULL, 0},
+    { "#BSENSDEBUG",   M2MB_ATP_NORML | M2MB_ATP_NOPIN | M2MB_ATP_NOSIM, BSENSDEBUG_AT_Callback, NULL, 0}
   };
   module = azx_easy_at_init( ( CHAR * ) CMD_MODULE_NAME, my_commands_List,
                              AZX_EASY_AT_ARRAY_SIZE( my_commands_List ) );

@@ -3,10 +3,10 @@
 
 /**
   @file
-    at_hash_MYCMD.h
+    at_hash_BSENS.h
 
   @brief
-    The file contains the implementation of custom command AT#MYCMD
+    The file contains the implementation of custom command AT#BSENS
 
   @author
 
