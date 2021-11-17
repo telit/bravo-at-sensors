@@ -15,7 +15,7 @@ LOGS_COLOUR = 0
 
 ## ---- do not touch below this line
 
-SW_VER = 1.0.4
+SW_VER = 1.0.5
 
 CLEAN_BEFORE_BUILD = clean
 
@@ -45,6 +45,11 @@ else
 endif
 # --------------------------------------------------------------------------
 
+# Uncomment the next line to build for old Rev B Bravo Boards
+#CPPFLAGS += -DBRAVO_REV_B
+
+# Uncomment the next line to run BSEC in its own thread
+#CPPFLAGS += -DBSEC_THREAD
 
 CPPFLAGS += -I azx/hdr
 OBJS += $(patsubst %.c,%.o,$(wildcard azx/src/*.c))

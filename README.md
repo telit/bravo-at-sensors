@@ -1,10 +1,88 @@
+
+
+# AppZone m2mb Bravo AT sensors App
+
+
+
+Package Version: **1.0.5**
+
+Firmware Version: **30.01.XX0.0**
+
+
+## Features
+
+This package goal is to provide sample source code for Bravo AT sensors demo app.
+ 
+
+
+## Deployment Instructions
+
+
+To manually deploy the Sample application on the devices perform the following steps:
+
+1. Have **30.01.XX0.0** FW version flashed (`AT#SWPKGV` will give you the FW version)
+
+1. Copy _m2mapz.bin_ to _/mod/_ 
+	```
+	AT#M2MWRITE="/mod/m2mapz.bin",\<size\>,1
+	```
+1. Run `AT#M2MRUN=2,m2mapz.bin`
+1. Run `AT+M2M=4,10`
+
+
+
+## Known Issues
+
+
+
+## Troubleshooting
+
+* Application does not work/start:
+	+ Delete application binary and retry
+    ```
+    AT#M2MDEL="/mod/m2mapz.bin"
+    ```
+	+ Delete everything, reflash and retry
+    ```
+    AT#M2MDEL="/mod/m2mapz.bin"
+    AT#M2MDEL="/mod/appcfg.ini"
+    ```
+      
+* Application project does not compile
+	+ Right click on project name
+	+ Select Properties
+	+ Select AppZone tab
+	+ Select the right plugin (firmware) version
+	+ Press "Restore Defaults", then "Apply", then "OK"
+	+ Build project again
+
+---
+
+## Making source code changes
+
+### Folder structure
+
+The applications code follow the structure below:
+
+* `hdr`: header files used by the application
+    * `app_cfg.h`: the main configuration file for the application
+* `src`: source code specific to the application
+* `BOSCH`: sources to manage Bosch sensors and devices mounted on the Bravo EVK board
+* `azx`: helpful utilities used by the application (for GPIOs, LOGGING etc)
+    * `hdr`: generic utilities' header files
+    * `src`: generic utilities' source files
+* `Makefile.in`: customization of the Make process
+
+
+##Applications 
+
 Telit IoT AppZone Bravo Board Sensors App - leverage onboard sensors
 
 ## Abstract
 
 This repository contains Telit IoT AppZone C sample app exposing Bravo Board sensors, allowing to access data from them through a dedicated custom AT command
 
-**The minimum firmware version to build the samples is 30.00.xx8, but it is suggested to use the latest 30.01.xx0**.
+**The minimum firmware version to build the sample is 30.01.xx0****.
 
 ---
 
@@ -14,22 +92,16 @@ This command allows to read one of the sensors values on the bravo board
 
 
 
-   <img src="../../pics/set.png" height="16">  **AT\#BSENS=&lt;sensorId&gt;**
+   <img src="./pics/set.png" height="16">  **AT\#BSENS=&lt;sensor_id&gt;[,&lt;accel_th&gt;]**
 
 Set command allows read the provided sensor data.
 
-Parameter:
----------------------------------------------------------------------
-**Name**            **Type**    **Default**    **Description**
-------------------- ----------  -------------  ------------------------
-**&lt;sensor Id&gt;**   integer    -             Sensor Id.
+Parameters:
 
-                                               Values:
-                                                 1   :   Enviroment
-
-                                                 2   :   3D vector
-
-                                                 3   :   Tampering
+| **Name**      	|   **Type**  	| **Default** 	| **Description**  	|
+|-----------	|:-------:	|---------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| **&lt;sensor_id&gt;** 	| integer 	| -       	| Sensor Id<br><br>  Values:<br>    1 : Enviroment<br>    2 : 3D vector<br>    3 : Tampering<br>    4 : Linear Acceleration<br><br> |
+| **&lt;accel_th&gt;**  	| integer 	| -       	| Acceleration threshold for Linear Acceleration sensor, as a **g** (Earth gravitational acceleration) multiple. If > 0, every time the module of the 3 axes acceleration exceeds the threshold, a counter will be increased. The same counter is reset to 0 when **&lt;accel_th&gt;** is set to 0 	|
 
 ---------------------------------------------------------------------
 
@@ -93,8 +165,31 @@ Where
 For example:
 
 **\#BSENS: 3,0**
-  ---------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
-   <img src="../../pics/query.png" height="16"> **AT\#BSENS=?**
+
+**Linear Acceleration**
+
+If &lt;accel_th&gt; is > 0:
+
+**\#BSENS: 4,&lt;accel_th&gt;,&lt;x&gt;,&lt;y&gt;,&lt;z&gt;,&lt;events_counter&gt;**
+
+Where
+
+ - &lt;accel_th&gt;: current threshold value
+ - &lt;x&gt;: x component of the acceleration as a floating point, in m/s^2
+ - &lt;y&gt;: y component of the acceleration as a floating point, in m/s^2
+ - &lt;z&gt;: z component of the acceleration as a floating point, in m/s^2
+ - &lt;events_counter&gt; how many times the threshold has been exceeded since the check has been enabled
+
+For example:
+
+**\#BSENS: 4,8,0.012,-0.003,0.02,2**
+
+If &lt;accel_th&gt; is 0:
+
+**\#BSENS: 4,0**
+
+---------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
+   <img src="./pics/query.png" height="16"> **AT\#BSENS=?**
 
 Test command reports the available range of values for parameter &lt;sensorId&gt; in the format:
 
@@ -114,5 +209,8 @@ Please note: all the apps using BSEC library configure the device with the **18v
 
 
 ---
+
+
+MultiSensors Ondemand AT application. Debug prints on **MAIN UART**
 
 
