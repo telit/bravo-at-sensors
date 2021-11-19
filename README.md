@@ -74,7 +74,7 @@ The applications code follow the structure below:
 * `Makefile.in`: customization of the Make process
 
 
-##Applications 
+## Applications 
 
 Telit IoT AppZone Bravo Board Sensors App - leverage onboard sensors
 
@@ -109,18 +109,18 @@ Upon set command execution, a response will be provided with different formats d
 
 **Environment**
 
-**\#BSENS: 1,&lt;temp&gt;,&lt;pressure&gt;,&lt;humidity&gt;,&lt;airQ&gt;**
+**\#BSENS: 1,&lt;temp&gt;,&lt;humidity&gt;,&lt;pressure&gt;,&lt;airQ&gt;**
 
 Where
 
  - &lt;temp&gt;: temperature as a floating point value in Celsius degrees (range -40 – 80)
- - &lt;pressure&gt;: pressure as a floating point in hPa (range 300-1100)
  - &lt;humidity&gt;: relative humidity as a floating point in %RH (range 0-100)
+ - &lt;pressure&gt;: pressure as a floating point in hPa (range 300-1100)
  - &lt;airQ&gt;: air quality, integer value (range 0-1000)
 
 For example
 
-**\#BSENS: 1,20.2,1014.5,42.4,25**
+**\#BSENS: 1,20.2,42.4,1014.5,25**
 
 
 
