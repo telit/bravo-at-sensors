@@ -62,7 +62,7 @@ To manually deploy the Sample application on the devices perform the following s
 
 ### Download IoT AppZone IDE v5
 
-Please download and  install [IoT AppZone IDE v5](https://bit.ly/31VcYJB) or higher.
+Please download and  install [IoT AppZone IDE v5](https://bit.ly/3DUeIzy) or higher.
 
 ### Folder structure
 
