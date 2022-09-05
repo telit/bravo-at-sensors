@@ -4,7 +4,7 @@
 
 
 
-Package Version: **1.0.5**
+Package Version: **1.0.6**
 
 Firmware Version: **30.01.XX0.0**
 
