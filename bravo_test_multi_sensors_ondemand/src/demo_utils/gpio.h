@@ -48,11 +48,10 @@ void gpio_interr_cb( UINT32 fd, void *userdata );
 /**
   @brief        Close GPIO input file/device
 
-  @param[in]    *pin         GPIO pin number
   @retval                   0 = device close, error other values
 
 */
-int close_gpio( int *pin );
+int close_gpio( void );
 
 /**
   @brief        Open GPIO input file/device

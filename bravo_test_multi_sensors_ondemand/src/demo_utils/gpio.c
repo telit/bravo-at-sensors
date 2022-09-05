@@ -56,16 +56,19 @@ void gpio_interr_cb( UINT32 fd, void *userdata )
 }
 
 /*-----------------------------------------------------------------------------------------------*/
-int close_gpio( int *pin )
+int close_gpio( void )
 {
   INT32 ret = -1;
-  ret = m2mb_gpio_close(*pin);
-  if(ret != 0)
+  if( gpio_fd != -1 )
   {
-    return -1;
-  }
+    ret = m2mb_gpio_close(gpio_fd);
+    if(ret != 0)
+    {
+      return -1;
+    }
 
-  *pin = 0;
+    gpio_fd = -1;
+  }
   return 0;
 }
 
